@@ -57,3 +57,24 @@ jobs:
           docker tag docker.io/xeffyr/termux:i686 docker.io/xeffyr/termux:latest
           docker push docker.io/xeffyr/termux:latest
         fi
+
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Setup QEMU
+      run: docker run --rm --privileged aptman/qus -s -- -p aarch64
+
+    - run: docker pull xeffyr/termux:aarch64
+
+    - name: Test build scripts
+      run: |
+        docker run \
+          -v $(pwd):/data/data/com.termux/files/home/packages \
+          -w /data/data/com.termux/files/home/packages \
+          --entrypoint sh \
+          xeffyr/termux:aarch64 \
+          -c ./test.sh
