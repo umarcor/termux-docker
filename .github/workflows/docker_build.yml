@@ -73,6 +73,7 @@ jobs:
     - name: Test build scripts
       run: |
         docker run \
+          -u 0 \
           -v $(pwd):/data/data/com.termux/files/home/packages \
           -w /data/data/com.termux/files/home/packages \
           --entrypoint sh \
